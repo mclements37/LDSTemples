@@ -87,6 +87,7 @@ map = new google.maps.Map(document.getElementById("map"), mapDefault);
 
 //Currently the map is only going through this jsonTest variable.
 //we need to get the json from a sever.
+
 var jsonTest = {
 	"templedata": [{
 		"Temple": "Aba Nigeria",
@@ -115,9 +116,17 @@ var jsonTest = {
 	}]
 };
 
+var temples;
+$.ajax({
+  url: "gettemples",
+  dataType: "json",
+ success: function(data) {
+  temples = data;
+
+
 //This gets the JSON variable and iterates through each one to create a marker.
-$.each(jsonTest.templedata, function(key, data) {
-	var latLng = new google.maps.LatLng(data.Latitude, data.Longitude);
+$.each(temples.templedata, function(key, data) {
+        var latLng = new google.maps.LatLng(data.Latitude, data.Longitude);
 	var marker = new google.maps.Marker({
 		position: latLng,
 		map: map,
@@ -132,7 +141,7 @@ $.each(jsonTest.templedata, function(key, data) {
 	var templeURL = "https://www.lds.org/church/temples/" + templeID + "?lang=eng";
 	var completeAddress =  data.Address + ", " + data.City + ", " + data.State + ", ";
 	var templeInfo = '<div><strong>' + data.Temple + ' Temple</strong><br>' +
-                data.Dedicated + '<br><a class="link" href=' + templeURL + '>Temple Webpage</a>' + '<br>' + '</div>';
+                data.Dedicated + '<br><a class="link" target="_blank" href=' + templeURL + '>Temple Webpage</a>' + '<br>' + '</div>';
 
 	//This creates the info-window for the marker, or what pops up when you click on a marker.
 	var infowindow = new google.maps.InfoWindow({
@@ -144,6 +153,8 @@ $.each(jsonTest.templedata, function(key, data) {
 	marker.addListener('click', function() {
 		infowindow.open(map, marker);
 	});
+});
+}
 });
 
 }
