@@ -45,7 +45,7 @@
 						<i class="material-icons">search</i>
 					</label>
 					<div class="mdl-textfield__expandable-holder">
-						<input class="mdl-textfield__input" type="text" id="search-expandable" />
+						<input class="mdl-textfield__input" type="text" id="search-expandable"/>
 						<label class="mdl-textfield__label" for="search-expandable">Search text</label>
 					</div>
 				</div>
@@ -123,6 +123,7 @@ $.ajax({
  success: function(data) {
   temples = data;
 
+var openInfoWindow;
 
 //This gets the JSON variable and iterates through each one to create a marker.
 $.each(temples.templedata, function(key, data) {
@@ -151,11 +152,46 @@ $.each(temples.templedata, function(key, data) {
 
 	//This adds the listener for the marker and info window.
 	marker.addListener('click', function() {
+		if(openInfoWindow)
+			openInfoWindow.close();
+		
+		openInfoWindow = infowindow;
 		infowindow.open(map, marker);
 	});
 });
 }
 });
+
+function closeOpenInfoWindows() {
+
+}
+
+
+// when enter key is pressed in search box, do ajax call to search for temples with that name
+$("#search-expandable").keydown(function(e) {
+  if(e.which == 13) {
+    findTemple();
+  }
+});
+
+function findTemple() {
+  var searchURL = "findtemple?q=";
+  var userSearch = $("#search-expandable").val().toLowerCase();
+
+  searchURL += userSearch;
+  $.ajax({
+    url: searchURL,
+    dataType : "json",
+    success : function(data) {
+      $.each(data, function(i, item) {
+        console.log(data[i]);
+      });
+
+    }
+
+  });
+
+}
 
 }
 
