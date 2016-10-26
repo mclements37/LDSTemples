@@ -16,6 +16,28 @@
 	    .link {
 			color: blue;
 		}
+		.temple-title{
+			style: bold;
+  			font-size: 20px;
+  			text-align: center;
+		}
+
+		.temple-picture {
+			margin-top: 10px;
+			height: 150px;
+			width: 250px;
+			style: bold;
+			border: 2px solid #000;
+			border-color: white;
+			color: white;
+			box-shadow: 0px 2px 10px #888888;
+			background-repeat: no-repeat;
+			background-position: 50%;
+			background-image:url('https://dl.dropboxusercontent.com/u/56269572/Temples/temple-announced-small.jpg');
+
+			-webkit-transition-duration: 0.4s; /* Safari */
+			transition-duration: 0.4s;
+		}
 
 	</style>
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
@@ -139,15 +161,18 @@ $.each(temples.templedata, function(key, data) {
       });
 
 	var templeID = data.Temple.replace(/\s+/g, '-').toLowerCase();
+	var templeImageURL = "https://dl.dropboxusercontent.com/u/56269572/Temples/" + templeID + "-temple.jpg";
+	var announcedTempleImageURL = "https://dl.dropboxusercontent.com/u/56269572/Temples/temple-announced.jpg";
 	var templeURL = "https://www.lds.org/church/temples/" + templeID + "?lang=eng";
 	var completeAddress =  data.Address + ", " + data.City + ", " + data.State + ", ";
-	var templeInfo = '<div><strong>' + data.Temple + ' Temple</strong><br>' +
-                data.Dedicated + '<br><a class="link" target="_blank" href=' + templeURL + '>Temple Webpage</a>' + '<br>' + '</div>';
+	var templeInfo = '<div><span class="temple-title">' + data.Temple + ' Temple</span><br>' +
+	data.Dedicated +  '<br>' + 
+	'<a href="' + templeURL +' " target="_blank"><img class="temple-picture" src="' + templeImageURL + '" onerror="' + announcedTempleImageURL + '"></a>' + '</div>';
 
 	//This creates the info-window for the marker, or what pops up when you click on a marker.
 	var infowindow = new google.maps.InfoWindow({
 		content: templeInfo,
-		maxWidth: 400
+		//maxWidth: 400
 	});
 
 	//This adds the listener for the marker and info window.
